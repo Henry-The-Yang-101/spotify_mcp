@@ -112,5 +112,42 @@ async def add_to_queue(uri: str):
     except spotipy.exceptions.SpotifyException as e:
         return f"Failed to add to queue: {str(e)}"
 
+@mcp.tool()
+async def get_user_profile():
+    """
+    Retrieve the current user's profile information.
+    """
+    try:
+        user = sp.current_user()
+        return f"User: {user['display_name']}, Email: {user.get('email', 'N/A')}, Country: {user['country']}, Subscription: {user.get('product', 'N/A')}"
+    except spotipy.exceptions.SpotifyException as e:
+        return f"Failed to retrieve user profile: {str(e)}"
+
+@mcp.tool()
+async def get_user_top_items(item_type: str = "tracks", time_range: str = "medium_term", limit: int = 10):
+    """
+    Fetch the user's top items (artists or tracks) over a specified time range.
+    """
+    if item_type not in ["tracks", "artists"]:
+        return "Invalid item_type. Choose 'tracks' or 'artists'."
+    try:
+        top_items = sp.current_user_top_items(time_range=time_range, limit=limit, type=item_type)
+        names = [item['name'] for item in top_items[item_type]]
+        return f"Top {item_type}: {', '.join(names)}"
+    except spotipy.exceptions.SpotifyException as e:
+        return f"Failed to retrieve top {item_type}: {str(e)}"
+
+@mcp.tool()
+async def get_saved_tracks(limit: int = 10):
+    """
+    Retrieve tracks saved to the user's library.
+    """
+    try:
+        saved = sp.current_user_saved_tracks(limit=limit)
+        tracks = [f"{item['track']['name']} by {', '.join(artist['name'] for artist in item['track']['artists'])}" for item in saved['items']]
+        return f"Saved tracks: {', '.join(tracks)}"
+    except spotipy.exceptions.SpotifyException as e:
+        return f"Failed to retrieve saved tracks: {str(e)}"
+
 if __name__ == "__main__":
     mcp.run()
