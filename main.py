@@ -76,6 +76,19 @@ async def search_track(query: str):
         return "No track found."
 
 @mcp.tool()
+async def play_song(query: str):
+    """
+    Search for a song and start playback of the first result.
+    """
+    results = sp.search(q=query, type='track', limit=1)
+    if results['tracks']['items']:
+        track_uri = results['tracks']['items'][0]['uri']
+        sp.start_playback(uris=[track_uri])
+        return f"Now playing: {results['tracks']['items'][0]['name']} by {', '.join(artist['name'] for artist in results['tracks']['items'][0]['artists'])}"
+    else:
+        return "No track found to play."
+
+@mcp.tool()
 async def get_current_track():
     """
     Get the currently playing track.
