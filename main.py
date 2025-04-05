@@ -31,7 +31,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
                                                redirect_uri=SPOTIPY_REDIRECT_URI,
                                                scope=SCOPE))
 
-@mcp.tool
+@mcp.tool()
 async def play():
     """
     Start or resume playback.
@@ -39,7 +39,7 @@ async def play():
     sp.start_playback()
     return "Playback started."
 
-@mcp.tool
+@mcp.tool()
 async def pause():
     """
     Pause playback.
@@ -47,7 +47,7 @@ async def pause():
     sp.pause_playback()
     return "Playback paused."
 
-@mcp.tool
+@mcp.tool()
 async def next_track():
     """
     Skip to the next track.
@@ -55,7 +55,7 @@ async def next_track():
     sp.next_track()
     return "Skipped to next track."
 
-@mcp.tool
+@mcp.tool()
 async def previous_track():
     """
     Skip to the previous track.
@@ -63,7 +63,7 @@ async def previous_track():
     sp.previous_track()
     return "Skipped to previous track."
 
-@mcp.tool
+@mcp.tool()
 async def search_track(query: str):
     """
     Search for a track by name.
@@ -75,7 +75,7 @@ async def search_track(query: str):
     else:
         return "No track found."
 
-@mcp.tool
+@mcp.tool()
 async def get_current_track():
     """
     Get the currently playing track.
@@ -88,7 +88,7 @@ async def get_current_track():
     else:
         return "No track is currently playing."
 
-@mcp.tool
+@mcp.tool()
 async def add_to_queue(uri: str):
     """
     Add a track to the playback queue.
